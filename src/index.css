@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.filter_division {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+
+}
+.filter_box {
+    width: 200px;
+}
+
+@media (max-width: 450px) {
+    .filter_division {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        padding: 0 10px;
+}
+}
