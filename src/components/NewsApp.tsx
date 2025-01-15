@@ -21,30 +21,23 @@ const NewsApp = () => {
   const [publishedDates, setPublishedDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>('All');
   const [category, setCategory] = useState<string>('All');
-  const [loading, setLoading] = useState<boolean>(false);
 
   const API_KEY_NEWSAPI = 'af715420647d4f2c8c98aa7d45f82483';
   const API_KEY_NYT = 'kTjEaNq6I8sKZq2mNHeyTIau1gyL2x6b';
   const API_KEY_GUARDIAN = '136cb212-73e5-45db-be01-c88adf01c536';
 
   const getData = async () => {
-    setLoading(true);
     let articles: Article[] = [];
-
+  
     try {
-      // CORS Proxy URL (Try using a different one if cors-anywhere doesn't work)
-      const corsProxy = 'https://cors-anywhere.herokuapp.com/';
-
       // Fetch from NewsAPI
       if (category === 'All' || category === 'NewsAPI') {
         const newsAPIResponse = await fetch(
-          `${corsProxy}https://newsapi.org/v2/everything?q=${encodeURIComponent(search)}&language=en&apiKey=${API_KEY_NEWSAPI}`
-        );
-        const data = await newsAPIResponse.json();
-        console.log('NewsAPI Response:', data); // Debugging log
-        if (data.articles) {
+          `https://newsapi.org/v2/everything?q=${encodeURIComponent(search)}&language=en&apiKey=${API_KEY_NEWSAPI}`
+        ).then((res) => res.json());
+        if (newsAPIResponse.articles) {
           articles = articles.concat(
-            data.articles
+            newsAPIResponse.articles
               .map((article: any) => ({
                 title: article.title,
                 description: article.description,
@@ -63,17 +56,15 @@ const NewsApp = () => {
           );
         }
       }
-
+  
       // Fetch from New York Times
       if (category === 'All' || category === 'New York Times') {
         const nytResponse = await fetch(
-          `${corsProxy}https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${encodeURIComponent(search)}&api-key=${API_KEY_NYT}`
-        );
-        const data = await nytResponse.json();
-        console.log('NYT Response:', data); // Debugging log
-        if (data.response?.docs) {
+          `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${encodeURIComponent(search)}&api-key=${API_KEY_NYT}`
+        ).then((res) => res.json());
+        if (nytResponse.response?.docs) {
           articles = articles.concat(
-            data.response.docs
+            nytResponse.response.docs
               .map((doc: any) => ({
                 title: doc.headline.main,
                 description: doc.abstract,
@@ -92,17 +83,15 @@ const NewsApp = () => {
           );
         }
       }
-
+  
       // Fetch from The Guardian
       if (category === 'All' || category === 'The Guardian') {
         const guardianResponse = await fetch(
-          `${corsProxy}https://content.guardianapis.com/search?page=1&q=${encodeURIComponent(search)}&api-key=${API_KEY_GUARDIAN}&show-fields=trailText,thumbnail`
-        );
-        const data = await guardianResponse.json();
-        console.log('Guardian Response:', data); // Debugging log
-        if (data.response?.results) {
+          `https://content.guardianapis.com/search?page=1&q=${encodeURIComponent(search)}&api-key=${API_KEY_GUARDIAN}&show-fields=trailText,thumbnail`
+        ).then((res) => res.json());
+        if (guardianResponse.response?.results) {
           articles = articles.concat(
-            data.response.results
+            guardianResponse.response.results
               .map((result: any) => ({
                 title: result.webTitle,
                 description: result.fields?.trailText || '',
@@ -121,27 +110,24 @@ const NewsApp = () => {
           );
         }
       }
-
+  
       if (articles.length > 0) {
         setNewsData(articles);
         setFilteredData(articles);
-
+  
         const uniqueSources: string[] = Array.from(new Set(articles.map((article: Article) => article.source.name)));
         setSources(uniqueSources);
-
+  
         const uniqueDates: string[] = Array.from(
           new Set(articles.map((article: Article) => new Date(article.publishedAt).toISOString().split('T')[0]))
         );
         setPublishedDates(uniqueDates);
-      } else {
-        console.log('No articles found.');
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     getData();
@@ -234,12 +220,10 @@ const NewsApp = () => {
       </div>
 
       <div className="p-4">
-        {loading ? (
-          <p>Loading ...</p>
-        ) : filteredData && filteredData.length > 0 ? (
+        {filteredData && filteredData.length > 0 ? (
           <Card data={filteredData} />
         ) : (
-          <p>No articles found.</p>
+          <p>Loading ...</p>
         )}
       </div>
     </section>
