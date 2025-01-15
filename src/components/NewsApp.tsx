@@ -225,13 +225,14 @@ const NewsApp = () => {
           <Card data={filteredData} />
         ) : (
           <div className='body'>
-            <img className='loadinggif' src="/assets/img/loading_gif.gif" alt="" />
+            <img className='loadinggif' src={loading} alt="" />
           </div>
         )}
       </div>
     </section>
   );
 };
+
 
 export default NewsApp;
 
