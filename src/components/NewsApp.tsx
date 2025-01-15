@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Card from './Card';
-import Loading from '../assets/img/loading_gif.gif'
+import loading from '../assets/img/loading_gif.gif'
 
 interface Article {
   title: string;
@@ -225,7 +225,7 @@ const NewsApp = () => {
           <Card data={filteredData} />
         ) : (
           <div className='body'>
-            <img className='loadinggif' src={Loading} alt="" />
+            <img className='loadinggif' src={loading} alt="" />
           </div>
         )}
       </div>
@@ -234,3 +234,7 @@ const NewsApp = () => {
 };
 
 export default NewsApp;
+
+
+
+
