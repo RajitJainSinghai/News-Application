@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Card from './Card';
+import Loading from '../assets/img/loading_gif.gif'
 
 interface Article {
   title: string;
@@ -30,7 +31,7 @@ const NewsApp = () => {
     let articles: Article[] = [];
   
     try {
-      // Fetch from NewsAPI
+      // Fetch data from NewsAPI
       if (category === 'All' || category === 'NewsAPI') {
         const newsAPIResponse = await fetch(
           `https://newsapi.org/v2/everything?q=${encodeURIComponent(search)}&language=en&apiKey=${API_KEY_NEWSAPI}`
@@ -57,7 +58,7 @@ const NewsApp = () => {
         }
       }
   
-      // Fetch from New York Times
+      // Fetch data from New York Times
       if (category === 'All' || category === 'New York Times') {
         const nytResponse = await fetch(
           `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${encodeURIComponent(search)}&api-key=${API_KEY_NYT}`
@@ -84,7 +85,7 @@ const NewsApp = () => {
         }
       }
   
-      // Fetch from The Guardian
+      // Fetch data from The Guardian
       if (category === 'All' || category === 'The Guardian') {
         const guardianResponse = await fetch(
           `https://content.guardianapis.com/search?page=1&q=${encodeURIComponent(search)}&api-key=${API_KEY_GUARDIAN}&show-fields=trailText,thumbnail`
@@ -223,7 +224,9 @@ const NewsApp = () => {
         {filteredData && filteredData.length > 0 ? (
           <Card data={filteredData} />
         ) : (
-          <p>Loading ...</p>
+          <div className='body'>
+            <img className='loadinggif' src={Loading} alt="" />
+          </div>
         )}
       </div>
     </section>
