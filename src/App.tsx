@@ -1,6 +1,6 @@
 
 import './App.css'
-import NewsApp from './components/NewsApp.tsx'
+import NewsApp from './components/NewsApp.js'
 
 function App() {
 
