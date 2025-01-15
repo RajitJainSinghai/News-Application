@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base:"/innoscripta_assessment/",
   plugins: [react()],
+  base:"/innoscripta_assessment",
 })
 
 
